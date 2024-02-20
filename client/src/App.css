@@ -1,0 +1,33 @@
+.formInput{
+    margin: 2% 0%;
+}
+.formInput label{
+    font-size: larger;
+    font-weight: 500;
+}
+.formHead{
+    color:rgba(255, 166, 0, 0.792);
+}
+.formInput input{
+    border:none;
+    outline:none;
+}
+.formSelect{
+    margin:0% 0% 1% 0%;
+    outline: none;
+    border:none;
+    border-bottom: 1px solid black;
+}
+.formInput .underline{
+    height: 1px;
+    width:80%;
+    background-color: black;
+}
+.slide{
+    width:65%;
+    float:right;
+    margin-top:1%;
+}
+.carousel-inner img {
+    border-radius: 10%;
+}

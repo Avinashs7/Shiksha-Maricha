@@ -1,0 +1,54 @@
+*{
+    background-color: wheat;
+}
+.navbar ,.navbar *{
+    background-color: rgba(243, 163, 64, 0.893);
+}
+.logo{
+    width: 3.5%;
+    height: auto;
+    margin-left: 1%;
+    margin-right: 3%;
+}
+.navbar-brand{
+    font-weight: 700;
+    font-size:xx-large;
+    color:rgba(232, 75, 70, 0.888);
+}
+.collapse.navbar-collapse{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.nav-item{
+    padding-left: 25px;
+}
+.search input{
+    text-align: center;
+    border-radius:25%;
+    border-color: rgba(210, 245, 106, 0.909);
+    color:rgba(230, 128, 65, 0.797);
+}
+.search button{
+    margin-left: 4%;
+    border-radius:25%;
+    border-color: rgba(210, 245, 106, 0.909);
+    color:rgba(230, 128, 65, 0.797);
+}
+.nav-link:hover{
+    background-color:orange;
+    border-radius: 25%;
+}
+.formBtn{
+    border: none;
+    background-color: inherit;
+}
+.formBtn:hover{
+    color:rgba(255, 111, 0, 0.792);
+}
+.success-btn{
+    background-color: inherit;
+}
+.success-btn:hover{
+    background-color: rgba(236, 231, 69, 0.902);
+}
