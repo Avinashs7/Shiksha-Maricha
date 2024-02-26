@@ -5,9 +5,9 @@
     font-size: larger;
     font-weight: 500;
 }
-.formHead{
+/* .formHead{
     color:rgba(255, 166, 0, 0.792);
-}
+} */
 .formInput input{
     border:none;
     outline:none;
@@ -31,3 +31,4 @@
 .carousel-inner img {
     border-radius: 10%;
 }
+
