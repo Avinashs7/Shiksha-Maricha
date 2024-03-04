@@ -1,6 +1,6 @@
-*{
-    background-color: wheat;
-}
+ *{
+    /* background-color: wheat; */
+} 
 .navbar ,.navbar *{
     background-color: rgba(243, 163, 64, 0.893);
 }

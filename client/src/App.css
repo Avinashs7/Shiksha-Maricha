@@ -32,3 +32,10 @@
     border-radius: 10%;
 }
 
+.fit-image {
+    object-fit: cover;
+    height: 100%; /* Ensure the image takes the full height of the carousel */
+  }
+  
+  
+
