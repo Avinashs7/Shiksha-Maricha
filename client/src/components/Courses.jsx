@@ -35,6 +35,7 @@ export default function Courses() {
 
   return (
     <div className="container text-center">
+      <h1>LEARN NEW THINGS</h1>
       {showAllCards ? (
         <div className="row">
           {cards.map((card, index) => (
