@@ -2,7 +2,8 @@
     /* background-color: wheat; */
 } 
 .navbar ,.navbar *{
-    background-color: rgba(243, 163, 64, 0.893);
+    background-color: rgba(22, 12, 1, 0.893);
+    color: rgb(242, 232, 232);
 }
 .logo{
     width: 3.5%;

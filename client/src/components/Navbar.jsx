@@ -158,11 +158,15 @@ export default function Navbar(props) {
           </>}
       </ul> 
     </div>
+    <div className="dark ms-3 ">
+        <button type="button" class="btn btn-outline-dark">Dark</button>
+      </div>
     <div>
     <form className="d-flex search" role="search">
         <input className="form-control " type="search" placeholder="Search" aria-label="Search"/>
         <button className="success-btn" type="submit">Search</button>
       </form>
+     
     </div>
   </div>
 </nav>
