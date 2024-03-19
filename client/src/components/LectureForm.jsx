@@ -8,7 +8,7 @@ export default function LectureForm() {
     const [loading,setLoading]=useState(false);
     const {cid}=useParams();
     const [Lecture, setLecture] = useState({course_id:cid});
-    const cloud_name='dbktadldz' 
+    const cloud_name='' 
     const navigate=useNavigate();
     const handleVideoChange=async(e)=>{
         const file = e.target.files[0];
