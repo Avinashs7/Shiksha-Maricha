@@ -8,7 +8,7 @@ export default function CourseForm() {
     const [loading,setLoading]=useState(false);
     const [course, setCourse] = useState();
     const navigate=useNavigate();
-    const cloud_name='dbktadldz' 
+    const cloud_name='' 
     const handleImageChange=async(e)=>{
         const file = e.target.files[0]; 
         const preset='courses'
