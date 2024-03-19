@@ -1,0 +1,29 @@
+module.exports=(sequelize,DataTypes)=>{
+    const Profile=sequelize.define("profile",{
+        qualification:{
+            type:DataTypes.STRING,
+        },
+        DOB:{
+            type:DataTypes.DATE,
+        },
+        phone:{
+            type:DataTypes.STRING,
+        },
+        address:{
+            type:DataTypes.STRING,
+        },
+        github:{
+            type:DataTypes.TEXT,
+        },
+        linkedin:{
+            type:DataTypes.TEXT,
+        },
+        twitter:{
+            type:DataTypes.TEXT,
+        },
+    },
+    {
+        timestamps:false,
+    });
+    return Profile
+}

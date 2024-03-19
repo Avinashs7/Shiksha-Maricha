@@ -3,6 +3,8 @@ module.exports=(sequelize,DataTypes)=>{
         email:{
             type:DataTypes.STRING,
             allowNull:false,
+            unique:true,
+            isEmail:true,
         },
         password:{
             type:DataTypes.STRING,
@@ -22,6 +24,9 @@ module.exports=(sequelize,DataTypes)=>{
         gender:{
             type:DataTypes.STRING,
             allowNull:false,
+        },
+        photo:{
+            type:DataTypes.TEXT,
         },
     });
     return User

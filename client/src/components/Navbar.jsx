@@ -1,37 +1,98 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Modal,Button} from 'react-bootstrap';
 import { useState } from 'react';
+import {Link} from 'react-router-dom'
 import axios from 'axios'
+import defaultImage from '../../public/default.jpg'
 export default function Navbar(props) {
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [err,setError]=useState('');
   const [toggle,setToggle]=useState(true);
-
+  const [streams,setStream]=useState([]);
+  const [user,setUser]=useState({});
+  const [profile,setProfile]=useState({});
   const [loggedIn,setLogin]=useState(false);
   const [loginDetails,setLoginDetails]=useState([]);
   const [signupDetails,setSignUpDetails]=useState([]);
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      setLogin(true);
+    }
+  },[loggedIn])
+  useEffect(()=>{
+    const getProfile=async()=>{
+      const token=localStorage.getItem('token');
+      await axios.get('http://localhost:8000/users/api',{headers:{Authorization:`Bearer ${token}`}})
+      .then((response)=>{
+        setUser(response.data)
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+      await axios.get('http://localhost:8000/profile/api',{headers:{Authorization:`Bearer ${token}`}})
+      .then((response)=>{
+        setProfile(response.data)
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+    }
+    if(localStorage.getItem('token'))
+    getProfile()
+  },[loggedIn])
+  useEffect(()=>{
+    const handleCourse=async()=>{
+      await axios.get(`http://localhost:8000/course/stream/getStream`)
+      .then((data)=>{
+        setStream(data?.data.stream);
+      })
+      .catch(err=>console.log(err))
+    }
+    handleCourse();
+  },[])
   const handleLogin=async ()=>{
     if(loginDetails.email!==undefined && loginDetails.password!==undefined){
-      await axios.get(`http://localhost:8000/users/login/${loginDetails.email}/${loginDetails.password}`)
+      await axios.post('http://localhost:8000/users/login',loginDetails)
       .then((data)=>{
         setLogin(data.data.success)
-        handleClose();
+        if(data.data.success){
+          localStorage.setItem('token',data.data.token);
+          localStorage.setItem('role',data.data.userRole);
+          console.log(localStorage.getItem('token'));
+          handleClose();
+        }
+        else{
+          setError('Incorrect username or password')
+          console.log(err)
+        }
       })
       .catch((err)=>{console.log(err)})
     }
   }
   const handleSignUp=async()=>{
-    // console.log(signupDetails)
     await axios.post('http://localhost:8000/users/signup',signupDetails)
-    .then(()=>{
-      setLogin(true)
-      handleClose();
+    .then((data)=>{
+      if(data.data.success){
+        setLogin(true)
+        localStorage.setItem('token',data.data.token);
+        localStorage.setItem('role',data.data.userRole);
+        handleClose();
+      }
+      else{
+        setError('User already exists');
+      }
     })
   }
+  const updateLogin=(e)=>{
+    if(err!=='')setError('');
+    setLoginDetails({...loginDetails,[e.target.name]:e.target.value});
+  }
   const updateSignup=(e)=>{
+    if(err!=='')setError('');
     setSignUpDetails({...signupDetails,[e.target.name]:e.target.value})
   }
   return (
@@ -47,12 +108,12 @@ export default function Navbar(props) {
       <form >
         <div className="formInput">
           <label for="email" >Email:</label><br></br>
-          <input type='email' name="email" className='text-lowercased' onChange={(e)=>setLoginDetails({...loginDetails,[e.target.name]:e.target.value})} required></input><br></br>
+          <input type='email' name="email" className='text-lowercased' onChange={updateLogin} required></input><br></br>
           <div className='underline'></div>
         </div>
         <div className='formInput'>
           <label for='password'>Password:</label><br></br>
-          <input type='password' name='password' onChange={(e)=>setLoginDetails({...loginDetails,[e.target.name]:e.target.value})} required></input><br></br>
+          <input type='password' name='password' onChange={updateLogin} required></input><br></br>
           <div className='underline'></div>
         </div>
       </form>
@@ -79,14 +140,6 @@ export default function Navbar(props) {
           </select><br></br>
         </div >
         <div className='formInput'>
-          <label type='dropdown' for='role'>Role: </label>
-          <select name='role' className="formSelect" onChange={updateSignup}>
-            <option value=''>--Select--</option>
-            <option value='student'>Student</option>
-            <option value='tutor'>Tutor</option>
-          </select><br></br>
-        </div>
-        <div className='formInput'>
           <label for="email" >Email:</label><br></br>
           <input type='email' name="email" className='text-lowercased' onChange={updateSignup} required></input><br></br>
           <div className='underline'></div>
@@ -104,50 +157,66 @@ export default function Navbar(props) {
     {
       toggle?
       <div>
-    <Button variant='primary' onClick={handleLogin}>Login</Button>
+        <Button variant='primary' onClick={handleLogin}>Login</Button>
       </div>
     :
     <div>
-    <Button variant='primary' onClick={handleSignUp}>SignUp</Button>
+      <Button variant='primary' onClick={handleSignUp}>SignUp</Button>
     </div>
   }
   </Modal.Footer>
 </Modal> 
     <nav className="navbar navbar-expand-lg">
     <div className="container-fluid">
-    <img src="../../public/favicon.ico" className="logo" alt="" />
+    <img src="../../public/shiksha-marichi.png" className="logo" alt="" />
     <a className="navbar-brand" href="/">{props.title}</a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
     <ul className="navbar-nav me-lg-0">
+        
         <li className="nav-item">
-          <a className="nav-link" aria-current="page" href="/">Home</a>
+          <Link className="nav-link" to="/about">About Us</Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="#">About Us</a>
+          <Link className="nav-link" to="/courses">Courses</Link>
         </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Learn
+            Streams
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="Courses">Courses</a></li>
-            <li><a className="dropdown-item" href="#">Another action</a></li>
-            <li><a className="dropdown-item" href="#">Something else here</a></li>
+            {streams && streams.map(stream=>
+              <li key={stream}><Link className='dropdowm-item nav-link' to='/'>{stream}</Link></li>
+              )}
           </ul>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="#">Universities</a>
         </li>
-        <li className="nav-item">
-          <a className="nav-link" href="Profile">Profile</a>
-        </li>
-          {loggedIn?
+      </ul> 
+      <ul className="navbar-nav me-lg-0">
+      {loggedIn?
           <>
           <li className='nav-item'>
-            <Button className='nav-link'>Profile</Button>
+            <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {
+              user.photo?
+                <img alt='' className='avatar' src={user.photo}></img> 
+                :
+                <img alt='profile' className='avatar' src={defaultImage}></img> 
+              }
+              <li to="/profile" className='nav-link username'>{user.firstName+' '+user.lastName}</li>
+            </a>
+            <ul className="dropdown-menu">
+              <li><Link className="dropdown-item" to="/profile">View profile</Link></li>
+              <li><a className="dropdown-item" href="#">
+                <Button className="nav-link logout" aria-current="page" onClick={()=>{localStorage.clear();setLogin(false);}}>Logout</Button></a>
+              </li>
+            </ul>
+            </li>
           </li>
           </>
           :
@@ -156,21 +225,16 @@ export default function Navbar(props) {
           <Button className="nav-link" aria-current="page" onClick={handleShow}>Login</Button>
           </li>
           </>}
-      </ul> 
+      </ul>
     </div>
-    <div className="dark ms-3 ">
-        <button type="button" class="btn btn-outline-dark">Dark</button>
-      </div>
     <div>
     <form className="d-flex search" role="search">
         <input className="form-control " type="search" placeholder="Search" aria-label="Search"/>
-        <button className="success-btn" type="submit">Search</button>
+        <button className="success-btn" type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
       </form>
-     
     </div>
   </div>
 </nav>
-
     </>
   )
 }

@@ -1,3 +1,54 @@
+.navbar ,.navbar *{
+    background-color: rgba(225, 224, 220, 0.893);
+}
+.logo{
+    width: 3.5%;
+    height: auto;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.navbar-brand{
+    font-weight: 700;
+    font-size:xx-large;
+    color:rgba(0, 0, 0, 0.758);
+}
+.collapse.navbar-collapse{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.nav-item{
+    padding-left: 25px;
+}
+.search input{
+    text-align: center;
+    border-radius:25%;
+    border-color: whitesmoke;
+    color:black;
+}
+.search button{
+    margin-left: 4%;
+    border-radius:25%;
+    border-color: whitesmoke;
+    color:black;
+}
+.nav-link:hover{
+    color:rgba(0, 0, 0, 0.566);
+    font-weight: 400;
+}
+.formBtn{
+    border: none;
+    background-color: inherit;
+}
+.formBtn:hover{
+    color:black;
+}
+.success-btn{
+    background-color: inherit;
+}
+.success-btn:hover{
+    background-color: whitesmoke;
+}
 .formInput{
     margin: 2% 0%;
 }
@@ -5,11 +56,12 @@
     font-size: larger;
     font-weight: 500;
 }
-/* .formHead{
-    color:rgba(255, 166, 0, 0.792);
-} */
+.formHead{
+    color:rgba(141, 114, 238, 0.792);
+}
 .formInput input{
     border:none;
+    width:100%;
     outline:none;
 }
 .formSelect{
@@ -23,18 +75,50 @@
     width:80%;
     background-color: black;
 }
-.slide{
-    width:65%;
-    float:right;
-    margin-top:1%;
+.error{
+    color:red;
+    font-size: large;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
-.carousel-inner img {
-    border-radius: 10%;
+.avatar{
+    width: 27px;
+    height: 27px;
+    display: inline-flex;
+    border-radius: 50%;
 }
-
-.fit-image {
-    object-fit: cover;
-    height: 100%; /* Ensure the image takes the full height of the carousel */
-  }
-  
-  
+.username{
+    display: inline-flex;
+}
+.logout,
+.logout:hover{
+    color:inherit;
+    background-color: inherit;
+}
+.App{
+    display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+}
+.footer-element a{
+    text-decoration: none;
+    color:black;
+}
+.footer-element a:hover{
+    text-decoration: none;
+    color:rgba(0, 0, 0, 0.788);
+    font-weight: 700;
+}
+.container.text-center{
+    margin-top: 5%;
+}
+.lecture-form{
+    margin: auto;
+}
+.btn-edit{
+    color:black;
+    background-color: white;
+    border:none;
+}
+.left-corner{
+    margin-right: auto;
+}
