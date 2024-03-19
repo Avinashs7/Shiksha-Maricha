@@ -83,6 +83,4 @@ const editUser=async(req,res)=>{
         res.status(500).send({success:false})
     }
 }
-
-
 module.exports={addStudent,isUser,getUser,addTutor,editUser}
