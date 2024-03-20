@@ -36,10 +36,36 @@ db.courses=require('./courseModel.js')(sequelize,DataTypes)
 db.coursetaken=require('./courseTakenModel.js')(sequelize,DataTypes)
 db.lectures=require('./lectureModel.js')(sequelize,DataTypes)
 db.courseAdded=require('./courseAddedModel.js')(sequelize,DataTypes)
+db.courseLog=require('./courseLog.js')(sequelize,DataTypes)
 
 db.sequelize.sync({force:false})
 .then(()=>{console.log('yes re-sync done')})
 .catch((err)=>console.log(err))
+
+async function createTriggerIfNeeded() {
+    try {
+        courses=db.courses;
+        courseLogs=db.courseLog;
+      const [triggers] = await sequelize.query(`SHOW TRIGGERS`);
+      if (triggers.length === 0) {
+        await sequelize.query(`
+          CREATE TRIGGER log_course_changes AFTER INSERT ON courses
+          FOR EACH ROW
+          BEGIN
+              INSERT INTO courseLogs ( course_id, course_name, timestamp)
+              VALUES ( NEW.id, NEW.title, NOW());
+          END;
+        `);
+        console.log('Trigger created successfully.');
+      } else {
+        console.log('Trigger already exists, skipping creation.');
+      }
+    } catch (error) {
+      console.error('Error creating trigger:', error);
+    }
+  }
+  
+
 
 db.profiles.belongsTo(db.users);
 
@@ -58,5 +84,7 @@ db.lectures.belongsTo(db.courses,{
     foreignKey:'course_id',
     as:'course'
 })
+
+createTriggerIfNeeded();
 
 module.exports=db

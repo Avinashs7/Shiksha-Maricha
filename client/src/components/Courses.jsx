@@ -41,7 +41,7 @@ export default function Courses(props) {
                   <div className="card-body">
                     <h5 className="card-title">{card.title}</h5>
                     <h6 className="card-title">{card.stream}</h6>
-                    <p className="card-text">{card.description}</p>
+                    <p className="card-text">{card.description.length > 50 ? card.description.substring(0, 50) + '...' : card.description}</p>
                   </div>
                 </div>
               </Link>

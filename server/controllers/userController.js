@@ -2,8 +2,14 @@ const db=require('../models')
 const bcrypt=require('bcrypt')
 const {setToken}=require('../authentication')
 const User=db.users
-const profile=db.profiles
+// const profile=db.profiles
 
+async function createProfile(id){
+    await db.sequelize.query('CALL createUserProfile(:id)',{
+        replacements:{id},
+        type:db.sequelize.QueryTypes.RAW
+    });
+}
 
 const addStudent=async (req,res)=>{
     try{
@@ -12,7 +18,8 @@ const addStudent=async (req,res)=>{
         const body=req.body
         const newUser={lastName:"",role:'student',...body}
         const result=await User.create(newUser)
-        const Profile=await profile.create({userId:result?.id})
+        createProfile(result?.id);
+        // const Profile=await profile.create({userId:result?.id})
         const token=setToken(result.id,result.role);
         res.status(200).send({success:true,token:token,userRole:result.role})
     }
@@ -29,7 +36,8 @@ const addTutor=async (req,res)=>{
         const body=req.body
         const newUser={lastName:"",role:'tutor',...body}
         const result=await User.create(newUser)
-        const Profile=await profile.create({userId:result?.id})
+        createProfile(result?.id);
+        // const Profile=await profile.create({userId:result?.id})
         const token=setToken(result.id,result.role);
         res.status(200).send({success:true,token:token,userRole:result.role})
     }
@@ -75,10 +83,6 @@ const editUser=async(req,res)=>{
         res.status(500).send({success:false})
     }
 }
-// const addPhoto=async (req,res)=>{
-//     const data=await User.findOne({where:{id:req.userId}});
-//     data.photo=req.body.photo;
-//     res.status(200).send({status:success});
-// }
+
 
 module.exports={addStudent,isUser,getUser,addTutor,editUser}
