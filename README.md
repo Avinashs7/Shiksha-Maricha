@@ -7,7 +7,14 @@ AI generated assessment to evaluate the student performance and track the perfor
 
 ## Table of Contents
 -[Getting Started](#getting-started)
-
+    -[Prerequesties](#prerequisites)
+-[Project Structure](#project-structure)
+-[Client side usage](#client-side-usageport-5173)
+-[Server side usage](#server-side-usageport-8000)
+    -[Create .env file](#prepare-your-secret)
+    -[Start the server](#start)
+-[Author](#author)
+    
 ## Getting Started
 
 Follow this step by step guide to get the project in local machine running.
@@ -18,21 +25,19 @@ Follow this step by step guide to get the project in local machine running.
 - [npm](https://nodejs.org/en/download/package-manager/)
 - [Cloudinary account](https://cloudinary.com/)
 
-notice, you need client and server runs concurrently in different terminal session, in order to make them talk to each other
+Notice, you need client and server runs concurrently in different terminal session, in order to make them talk to each other
 
 ## Installation
 
 ## Clone the repository
 
 ```terminal 
-$https://github.com/Avinashs7/Shiksha-Marichi
-cd Shiksha Marichi
+$ https://github.com/Avinashs7/Shiksha-Marichi
+$ cd Shiksha Marichi
 ```
 
 ## Project structure
 ```terminal
-LICENSE
-package.json
 server/
    package.json
    .env (to create .env, check [prepare your secret session])
@@ -56,7 +61,7 @@ $ npm run dev  // run it locally
 
 run the script at the first level:
 
-(You need to add a JWT_SECRET in .env to connect to MongoDB and cloudinary cloud name, cloud api key, cloud api key, cloudinary api secret and cloudinary url)
+(You need to add a JWT_SECRET(ACCESS_TOKEN) in .env for authentication and cloudinary cloud name, cloudinary api key, cloudinary api key, cloudinary api secret and cloudinary url)
 
 ### Start
 
@@ -68,6 +73,6 @@ $ npm run build // this will build the server code to es5 js codes and generate 
 ```
 
 ## Author
-[Avinash](https://www.linkedin.com/in/avinash-s007/)
-[Aboo Bakar]()
+-[Avinash](https://www.linkedin.com/in/avinash-s007/)
+-[Aboo Bakar]()
 
