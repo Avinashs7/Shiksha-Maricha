@@ -6,7 +6,7 @@
 
 AI generated assessment to evaluate the student performance and track the performance and give more practical scenario to solve a certain problem on the topics.
 
-### Table of Contents
+## Table of Contents
 
 -[Getting Started](#getting-started)
   -[Prerequesties](#prerequisites)
