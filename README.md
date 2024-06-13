@@ -8,14 +8,14 @@ AI generated assessment to evaluate the student performance and track the perfor
 
 ## Table of Contents
 
--[Getting Started](#getting-started)
-  -[Prerequesties](#prerequisites)
-  -[Project Structure](#project-structure)
--[Client side usage](#client-side-usageport-5173)
--[Server side usage](#server-side-usageport-8000)
-  -[Create .env file](#prepare-your-secret)
-  -[Start the server](#start)
--[Author](#author)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Project Structure](#project-structure)
+- [Client-side Usage](#client-side-usageport-5173)
+- [Server-side Usage](#server-side-usageport-8000)
+  - [Create .env File](#prepare-your-secret)
+  - [Start the Server](#start)
+- [Author](#author)
 
 ## Getting Started
 
