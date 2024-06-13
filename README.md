@@ -1,11 +1,13 @@
 # Shiksha Marichi - An Edtech Platform
+
 "Shiksha Marichi" is an edtech platform which has role based authentication. Where teacher is authorized to upload courses and it is uploaded to cloud storage and it can be viewed in the web application through media player. Web app consists student role who can enroll for the courses provided by the tutor. 
 
+## Future Enchancement
 
-# Future Enchancement 
 AI generated assessment to evaluate the student performance and track the performance and give more practical scenario to solve a certain problem on the topics.
 
-## Table of Contents
+### Table of Contents
+
 -[Getting Started](#getting-started)
     -[Prerequesties](#prerequisites)
 -[Project Structure](#project-structure)
@@ -14,12 +16,13 @@ AI generated assessment to evaluate the student performance and track the perfor
     -[Create .env file](#prepare-your-secret)
     -[Start the server](#start)
 -[Author](#author)
-    
+
 ## Getting Started
 
 Follow this step by step guide to get the project in local machine running.
 
 ## Prerequisites
+
 - [MySQL](https://dev.mysql.com/downloads/installer/)
 - [Node](https://nodejs.org/en/download/) ^10.0.0
 - [npm](https://nodejs.org/en/download/package-manager/)
@@ -31,12 +34,14 @@ Notice, you need client and server runs concurrently in different terminal sessi
 
 ## Clone the repository
 
-```terminal 
+```terminal
 $ https://github.com/Avinashs7/Shiksha-Marichi
 $ cd Shiksha Marichi
+...
 ```
 
 ## Project structure
+
 ```terminal
 server/
    package.json
@@ -46,13 +51,13 @@ client/
 ...
 ```
 
-
-
 ## Client-side usage(PORT: 5173)
+
 ```terminal
 $ cd client    // go to client folder
 $ npm i        // npm install packages
 $ npm run dev  // run it locally
+...
 ```
 
 ## Server-side usage(PORT: 8000)
@@ -70,9 +75,10 @@ $ cd server   // go to server folder
 $ npm i       // npm install packages
 $ npm run dev // run it locally
 $ npm run build // this will build the server code to es5 js codes and generate a dist file
+...
 ```
 
 ## Author
--[Avinash](https://www.linkedin.com/in/avinash-s007/)
--[Aboo Bakar]()
 
+-[Avinash](https://www.linkedin.com/in/avinash-s007/)
+-[Aboo Bakar](https://github.com/Abubakar2807)
