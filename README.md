@@ -80,5 +80,5 @@ $ npm run build // this will build the server code to es5 js codes and generate 
 
 ## Author
 
--[Avinash](https://www.linkedin.com/in/avinash-s007/)
--[Aboo Bakar](https://github.com/Abubakar2807)
+- [Avinash](https://www.linkedin.com/in/avinash-s007/)
+- [Aboo Bakar](https://github.com/Abubakar2807)
