@@ -1,13 +1,15 @@
 const express=require('express')
-const { addStudent, isUser ,getUser,addTutor, editUser} = require('../controllers/userController')
+const { addStudent, isUser ,getUser,addTutor, editUser,getGoogleAccount,handleGoogleUser} = require('../controllers/userController')
+const {validateOtp}=require("../controllers/validationController")
 const { userOnly } = require('../middlewares/auth')
 const router=express.Router()
 
+router.post('/verify',userOnly,validateOtp)
 router.post('/signup',addStudent)
 router.post('/tutor/add',addTutor)
 router.post('/login',isUser)
 router.patch('/api/edit',userOnly,editUser)
 router.get('/api',userOnly,getUser)
-
-
+router.get('/google/signin',getGoogleAccount)
+router.get('/google/auth',handleGoogleUser)
 module.exports=router

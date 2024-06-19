@@ -28,6 +28,10 @@ module.exports=(sequelize,DataTypes)=>{
         photo:{
             type:DataTypes.TEXT,
         },
+        verified:{
+            type:DataTypes.BOOLEAN,
+            allowNull:true,
+        }
     });
     return User
 }

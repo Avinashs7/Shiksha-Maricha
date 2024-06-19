@@ -37,6 +37,7 @@ db.coursetaken=require('./courseTakenModel.js')(sequelize,DataTypes)
 db.lectures=require('./lectureModel.js')(sequelize,DataTypes)
 db.courseAdded=require('./courseAddedModel.js')(sequelize,DataTypes)
 db.courseLog=require('./courseLog.js')(sequelize,DataTypes)
+db.validation=require('./validationModel.js')(sequelize,DataTypes)
 
 db.sequelize.sync({force:false})
 .then(()=>{console.log('yes re-sync done')})
@@ -74,6 +75,8 @@ db.coursetaken.belongsTo(db.users);
 
 db.courseAdded.belongsTo(db.courses);
 db.courseAdded.belongsTo(db.users);
+
+db.validation.belongsTo(db.users);
 
 db.courses.hasMany(db.lectures,{
     foreignKey:'course_id',
