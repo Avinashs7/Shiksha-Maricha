@@ -10,6 +10,7 @@ import Footer from './components/Footer'
 import CourseForm from './components/CourseForm'
 import Course from './components/Course'
 import Lecture from './components/Lecture'
+import GoogleAuth from './components/GoogleAuth'
 
 function App() {
   const [role,setRole]=useState()
@@ -17,11 +18,13 @@ function App() {
     if(localStorage.getItem('role'))
     setRole(localStorage.getItem('role'));
   },[])
+
   return (
     <>
     <div className='App'>
       <BrowserRouter>
         <Routes>
+          <Route path="/users/google" element={<><GoogleAuth/></>}></Route>
           <Route exact path="/" element={<>
           <Navbar title="Shiksha Marichi"/>
           <Home/>

@@ -1,21 +1,25 @@
 import React, { useEffect } from 'react'
 import {Modal,Button} from 'react-bootstrap';
 import { useState } from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import defaultImage from '../../public/default.jpg'
+import Otp from './Otp.jsx'
 export default function Navbar(props) {
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+    
 
+  const handleShow = () => setShow(true);
+  const navigate=useNavigate();
   const [err,setError]=useState('');
   const [toggle,setToggle]=useState(true);
   const [streams,setStream]=useState([]);
   const [user,setUser]=useState({});
   const [profile,setProfile]=useState({});
   const [loggedIn,setLogin]=useState(false);
+  const [validate,setValidate]=useState(false);
   const [loginDetails,setLoginDetails]=useState([]);
   const [signupDetails,setSignUpDetails]=useState([]);
   useEffect(()=>{
@@ -54,6 +58,15 @@ export default function Navbar(props) {
     }
     handleCourse();
   },[])
+  const handleGoogleSignIn=async()=>{
+    await axios.get('http://localhost:8000/users/google/signin')
+    .then((data)=>{
+      window.location.replace(data.data.url)
+    })
+    .catch((err)=>{
+      console.error(err);
+    })
+  }
   const handleLogin=async ()=>{
     if(loginDetails.email!==undefined && loginDetails.password!==undefined){
       await axios.post('http://localhost:8000/users/login',loginDetails)
@@ -81,6 +94,7 @@ export default function Navbar(props) {
         localStorage.setItem('token',data.data.token);
         localStorage.setItem('role',data.data.userRole);
         handleClose();
+        setValidate(true);
       }
       else{
         setError('User already exists');
@@ -97,6 +111,7 @@ export default function Navbar(props) {
   }
   return (
     <>
+    {validate && <Otp validate={validate} handleValidate={()=>setValidate(false)}/>}
     <Modal show={show} onHide={handleClose}>
   <Modal.Header closeButton>
     <button className='formBtn' onClick={()=>setToggle(true)}><Modal.Title className={toggle?"formHead":""}>Login</Modal.Title></button><h1>/</h1>
@@ -156,13 +171,23 @@ export default function Navbar(props) {
   <Modal.Footer>
     {
       toggle?
+      <>
+      <button type="button" onClick={handleGoogleSignIn} class="google-sign-in-button" >
+          Sign in with Google
+        </button>
       <div>
         <Button variant='primary' onClick={handleLogin}>Login</Button>
       </div>
+      </>
     :
+    <>
+    <button type="button" onClick={handleGoogleSignIn} class="google-sign-in-button" >
+        Sign up with Google
+    </button>
     <div>
       <Button variant='primary' onClick={handleSignUp}>SignUp</Button>
     </div>
+    </>
   }
   </Modal.Footer>
 </Modal> 
