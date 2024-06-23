@@ -85,16 +85,16 @@ const isUser=async (req,res)=>{
     try{
         const data=await User.findOne({where:{email:req.body.email}})
         if(!data)return res.status(300).send({success:false,msg:"No user found"});
-        if(!data.verified)return res.send(300).send({success:false,msg:"User not verified"});
+        if(!data.verified)return res.status(300).send({success:false,msg:"User not verified"});
         const val=await bcrypt.compare(req.body.password,data.password)
         if(!val){
             return res.status(300).send({success:false,msg:'password incorrect'})
         }
         const token=setToken(data.id,data.role);
-        res.status(200).send({success:true,token:token,userRole:data.role})
+        return res.status(200).send({success:true,token:token,userRole:data.role})
     }
     catch(err){
-        res.status(500).send({success:false,msg:"error occured"})
+        return res.status(500).send({success:false,msg:"error occured"})
     }
 }
 const getUser=async(req,res)=>{

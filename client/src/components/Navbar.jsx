@@ -5,6 +5,8 @@ import {Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import defaultImage from '../../public/default.jpg'
 import Otp from './Otp.jsx'
+import SignIn from './SignIn.jsx';
+import SignUp from './SignUp.jsx';
 export default function Navbar(props) {
 
   const [show, setShow] = useState(false);
@@ -12,7 +14,6 @@ export default function Navbar(props) {
     
 
   const handleShow = () => setShow(true);
-  const navigate=useNavigate();
   const [err,setError]=useState('');
   const [toggle,setToggle]=useState(true);
   const [streams,setStream]=useState([]);
@@ -119,53 +120,9 @@ export default function Navbar(props) {
     </Modal.Header>
     <Modal.Body>
   { toggle ?
-    <div>
-      <form >
-        <div className="formInput">
-          <label for="email" >Email:</label><br></br>
-          <input type='email' name="email" className='text-lowercased' onChange={updateLogin} required></input><br></br>
-          <div className='underline'></div>
-        </div>
-        <div className='formInput'>
-          <label for='password'>Password:</label><br></br>
-          <input type='password' name='password' onChange={updateLogin} required></input><br></br>
-          <div className='underline'></div>
-        </div>
-      </form>
-    </div>
+    <SignIn updateLogin={updateLogin}/>
     :
-    <div>
-      <form>
-        <div className='formInput'>
-          <label for="firstName">First Name:</label><br></br>
-          <input type='text' name='firstName' onChange={updateSignup} required></input><br></br>
-          <div className='underline'></div>
-        </div>
-        <div className='formInput'>
-          <label for="lastName">Last Name:</label><br></br>
-          <input type='text' name='lastName' onChange={updateSignup}></input><br></br>
-          <div className='underline'></div>
-        </div>
-        <div className='formInput'>
-          <label type='dropdown' for='gender'>Gender: </label>
-          <select name='gender' className="formSelect" onChange={updateSignup}>
-            <option value=''>--Select--</option>
-            <option value='male'>Male</option>
-            <option value='female'>Female</option>
-          </select><br></br>
-        </div >
-        <div className='formInput'>
-          <label for="email" >Email:</label><br></br>
-          <input type='email' name="email" className='text-lowercased' onChange={updateSignup} required></input><br></br>
-          <div className='underline'></div>
-        </div>
-        <div className='formInput'>
-          <label for='password'>Password:</label><br></br>
-          <input type='password' name='password' onChange={updateSignup} required></input><br></br>
-          <div className='underline'></div>
-        </div>
-      </form>
-    </div>
+    <SignUp updateSignup={updateSignup}/>
 }
 </Modal.Body>
   <Modal.Footer>
@@ -174,7 +131,7 @@ export default function Navbar(props) {
       <>
       <button type="button" onClick={handleGoogleSignIn} class="google-sign-in-button" >
           Sign in with Google
-        </button>
+      </button>
       <div>
         <Button variant='primary' onClick={handleLogin}>Login</Button>
       </div>
