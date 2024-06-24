@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import {Modal,Button} from 'react-bootstrap';
 import { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 import defaultImage from '../../public/default.jpg'
 import Otp from './Otp.jsx'
 import SignIn from './SignIn.jsx';
 import SignUp from './SignUp.jsx';
+import { useUser } from '../contexts/UserContext.jsx';
 export default function Navbar(props) {
 
   const [show, setShow] = useState(false);
@@ -17,38 +18,18 @@ export default function Navbar(props) {
   const [err,setError]=useState('');
   const [toggle,setToggle]=useState(true);
   const [streams,setStream]=useState([]);
-  const [user,setUser]=useState({});
-  const [profile,setProfile]=useState({});
-  const [loggedIn,setLogin]=useState(false);
   const [validate,setValidate]=useState(false);
-  const [loginDetails,setLoginDetails]=useState([]);
-  const [signupDetails,setSignUpDetails]=useState([]);
+
+  const UserContext=useUser();
+  
   useEffect(()=>{
     if(localStorage.getItem('token')){
-      setLogin(true);
+      UserContext?.setLogin(true);
+      handleClose();
     }
-  },[loggedIn])
-  useEffect(()=>{
-    const getProfile=async()=>{
-      const token=localStorage.getItem('token');
-      await axios.get('http://localhost:8000/users/api',{headers:{Authorization:`Bearer ${token}`}})
-      .then((response)=>{
-        setUser(response.data)
-      })
-      .catch(err=>{
-        console.log(err);
-      });
-      await axios.get('http://localhost:8000/profile/api',{headers:{Authorization:`Bearer ${token}`}})
-      .then((response)=>{
-        setProfile(response.data)
-      })
-      .catch(err=>{
-        console.log(err);
-      });
-    }
-    if(localStorage.getItem('token'))
-    getProfile()
-  },[loggedIn])
+  },[UserContext?.loggedIn])
+  
+  
   useEffect(()=>{
     const handleCourse=async()=>{
       await axios.get(`http://localhost:8000/course/stream/getStream`)
@@ -59,56 +40,14 @@ export default function Navbar(props) {
     }
     handleCourse();
   },[])
-  const handleGoogleSignIn=async()=>{
-    await axios.get('http://localhost:8000/users/google/signin')
-    .then((data)=>{
-      window.location.replace(data.data.url)
-    })
-    .catch((err)=>{
-      console.error(err);
-    })
-  }
-  const handleLogin=async ()=>{
-    if(loginDetails.email!==undefined && loginDetails.password!==undefined){
-      await axios.post('http://localhost:8000/users/login',loginDetails)
-      .then((data)=>{
-        setLogin(data.data.success)
-        if(data.data.success){
-          localStorage.setItem('token',data.data.token);
-          localStorage.setItem('role',data.data.userRole);
-          console.log(localStorage.getItem('token'));
-          handleClose();
-        }
-        else{
-          setError('Incorrect username or password')
-          console.log(err)
-        }
-      })
-      .catch((err)=>{console.log(err)})
-    }
-  }
-  const handleSignUp=async()=>{
-    await axios.post('http://localhost:8000/users/signup',signupDetails)
-    .then((data)=>{
-      if(data.data.success){
-        setLogin(true)
-        localStorage.setItem('token',data.data.token);
-        localStorage.setItem('role',data.data.userRole);
-        handleClose();
-        setValidate(true);
-      }
-      else{
-        setError('User already exists');
-      }
-    })
-  }
+
   const updateLogin=(e)=>{
     if(err!=='')setError('');
-    setLoginDetails({...loginDetails,[e.target.name]:e.target.value});
+    UserContext?.setLoginDetails({...UserContext?.loginDetails,[e.target.name]:e.target.value});
   }
   const updateSignup=(e)=>{
     if(err!=='')setError('');
-    setSignUpDetails({...signupDetails,[e.target.name]:e.target.value})
+    UserContext?.setSignUpDetails({...UserContext?.signupDetails,[e.target.name]:e.target.value})
   }
   return (
     <>
@@ -129,20 +68,20 @@ export default function Navbar(props) {
     {
       toggle?
       <>
-      <button type="button" onClick={handleGoogleSignIn} class="google-sign-in-button" >
+      <button type="button" onClick={UserContext?.handleGoogleSignIn} class="google-sign-in-button" >
           Sign in with Google
       </button>
       <div>
-        <Button variant='primary' onClick={handleLogin}>Login</Button>
+        <Button variant='primary' onClick={UserContext?.handleLogin}>Login</Button>
       </div>
       </>
     :
     <>
-    <button type="button" onClick={handleGoogleSignIn} class="google-sign-in-button" >
+    <button type="button" onClick={UserContext?.handleGoogleSignIn} class="google-sign-in-button" >
         Sign up with Google
     </button>
     <div>
-      <Button variant='primary' onClick={handleSignUp}>SignUp</Button>
+      <Button variant='primary' onClick={UserContext?.handleSignUp}>SignUp</Button>
     </div>
     </>
   }
@@ -179,23 +118,23 @@ export default function Navbar(props) {
         </li>
       </ul> 
       <ul className="navbar-nav me-lg-0">
-      {loggedIn?
+      {UserContext?.loggedIn?
           <>
           <li className='nav-item'>
             <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {
-              user.photo?
-                <img alt='' className='avatar' src={user.photo}></img> 
+              UserContext?.user?.photo?
+                <img alt='' className='avatar' src={UserContext?.user.photo}></img> 
                 :
                 <img alt='profile' className='avatar' src={defaultImage}></img> 
               }
-              <li to="/profile" className='nav-link username'>{user.firstName+' '+user.lastName}</li>
+              <li to="/profile" className='nav-link username'>{UserContext?.user?.firstName+' '+UserContext?.user?.lastName}</li>
             </a>
             <ul className="dropdown-menu">
               <li><Link className="dropdown-item" to="/profile">View profile</Link></li>
               <li><a className="dropdown-item" href="#">
-                <Button className="nav-link logout" aria-current="page" onClick={()=>{localStorage.clear();setLogin(false);}}>Logout</Button></a>
+                <Button className="nav-link logout" aria-current="page" onClick={()=>{localStorage.clear();UserContext?.setLogin(false);}}>Logout</Button></a>
               </li>
             </ul>
             </li>

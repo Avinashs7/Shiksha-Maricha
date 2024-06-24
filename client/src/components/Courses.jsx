@@ -2,22 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
-import axios from 'axios'
 import 'react-multi-carousel/lib/styles.css';
 import { Button } from 'react-bootstrap';
-
+import {useCourse} from '../contexts/CourseContext'
 
 export default function Courses(props) {
   const [showAllCards, setShowAllCards] = useState(false);
-  const [cards,setCards]=useState([]);
-  useEffect(()=>{
-    const getCards=async()=>{
-      await axios.get('http://localhost:8000/course/getAllCourses')
-      .then((data)=>{setCards(data.data);})
-      .catch((err)=>console.log(err))
-    }
-    getCards();
-  },[])
+  const courses=useCourse();
+  const cards=courses?.course;
   const responsive = {
     superLargeDesktop: { 
       breakpoint: { max: 4000, min: 3000 }, items: 5 },

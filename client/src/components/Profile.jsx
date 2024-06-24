@@ -1,57 +1,32 @@
 import React from 'react';
 import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
-import {Link, useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {MDBCol,MDBContainer,MDBRow,MDBCard,MDBCardText,MDBCardBody,MDBCardImage,MDBBtn,MDBBreadcrumb,MDBBreadcrumbItem,MDBIcon,MDBListGroup,MDBListGroupItem
 } from 'mdb-react-ui-kit';
 import defaultImage from '../../public/default.jpg'
 import { Button } from 'react-bootstrap';
 import {InfinitySpin} from 'react-loader-spinner'
-
+import {useProfile} from '../contexts/ProfileContext';
 
 export default function ProfilePage(props) {
-  const [user,setUser]=useState({});
   const fileInputRef = useRef(null);
-  const [loading,setLoading]=useState(false);
-  const [profile,setProfile]=useState({});
   const [edit,setEdit]=useState(false);
-  const [refresh,setRefresh]=useState(false);
   const cloud_name='dbktadldz';
-  const navigate=useNavigate();
-  useEffect(()=>{
-    const getProfile=async()=>{
-      const token=localStorage.getItem('token');
-      await axios.get('http://localhost:8000/users/api',{headers:{Authorization:`Bearer ${token}`}})
-      .then((response)=>{
-        setUser(response.data)
-      })
-      .catch(err=>{
-        console.log(err);
-      });
-      await axios.get('http://localhost:8000/profile/api',{headers:{Authorization:`Bearer ${token}`}})
-      .then((response)=>{
-        setProfile(response.data)
-      })
-      .catch(err=>{
-        console.log(err);
-      });
-    }
-    getProfile();
-    setRefresh(false);
-    setLoading(false);
-  },[refresh])
+  const ProfileContext=useProfile();
+  const user=ProfileContext?.user;
   
   const handleUserEdit=(e)=>{
-    setUser({...user,[e.target.name]:e.target.value})
+    ProfileContext?.setUser({...user,[e.target.name]:e.target.value})
   }
   const handleProfileEdit=async(e)=>{
     e.preventDefault();
-    setProfile({...profile,[e.target.name]:e.target.value})
+    ProfileContext?.setProfile({...ProfileContext?.profile,[e.target.name]:e.target.value})
   }
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    if(!loading)
-    setLoading(true);
+    if(!ProfileContext?.loading)
+    ProfileContext?.setLoading(true);
     console.log(user)
     const token=localStorage.getItem('token');
     await axios.patch('http://localhost:8000/users/api/edit',user,{headers:{Authorization:`Bearer ${token}`}})
@@ -59,12 +34,12 @@ export default function ProfilePage(props) {
       console.log(data.data)
     })
     .catch(err=>console.log(err))
-    await axios.patch('http://localhost:8000/profile/api/edit',profile,{headers:{Authorization:`Bearer ${token}`}})
+    await axios.patch('http://localhost:8000/profile/api/edit',ProfileContext?.profile,{headers:{Authorization:`Bearer ${token}`}})
     .then((data)=>{
       console.log(data.data)
     })
     .catch(err=>console.log(err))
-    setRefresh(true);
+    ProfileContext?.setRefresh(true);
     setEdit(false);
   }
   const updateUser=async(updated)=>{
@@ -72,15 +47,15 @@ export default function ProfilePage(props) {
     await axios.patch('http://localhost:8000/users/api/edit',updated,{headers:{Authorization:`Bearer ${token}`}})
     .then((data)=>{
       console.log(data.data)
-      setLoading(false);
+      ProfileContext?.setLoading(false);
     })
-    .catch(err=>{console.log(err);setLoading(false);})
+    .catch(err=>{console.log(err);ProfileContext?.setLoading(false);})
   }
   const handleProfilePhoto=async(e)=>{
     const file = e.target.files[0]; 
     const preset='profile'
     try{
-        setLoading(true);
+        ProfileContext?.setLoading(true);
         await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,{file:file,upload_preset:preset},
         {headers:{'Content-Type':'multipart/form-data'}})
         .then((imgUrl)=>{
@@ -99,7 +74,7 @@ const handleButtonClick = (e) => {
 };
   return (
     <section style={{ backgroundColor: '#eee' }}>
-      {loading&&
+      {ProfileContext?.loading&&
       <div style={{textAlign:'center'}}><InfinitySpin visible={true} width="200" color="#4fa94d" ariaLabel="infinity-spin-loading"/></div>
       }
       <MDBContainer className="py-5">
@@ -151,24 +126,24 @@ const handleButtonClick = (e) => {
                 <MDBListGroup flush className="rounded-3">
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fab icon="linkedin-in fa-lg" style={{ color: '#0082ca' }}/>
-                    {profile.linkedin?
-                      <MDBCardText><a href={profile.linkedin}>{profile.linkedin}</a></MDBCardText>
+                    {ProfileContext?.profile?.linkedin?
+                      <MDBCardText><a href={ProfileContext?.profile?.linkedin}>{ProfileContext?.profile?.linkedin}</a></MDBCardText>
                     :
                       <MDBCardText className="formInput"><input type='text' placeholder='URL: https://linkedin.com/username/'></input></MDBCardText>
                     }
                   </MDBListGroupItem>
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fab icon="github fa-lg" style={{ color: '#333333' }} />
-                    {profile.github?
-                      <MDBCardText><a href={profile.github}>{profile.github}</a></MDBCardText>
+                    {ProfileContext?.profile?.github?
+                      <MDBCardText><a href={ProfileContext?.profile?.github}>{ProfileContext?.profile?.github}</a></MDBCardText>
                     :
                       <MDBCardText className="formInput"><input type='text' placeholder='URL: https://github.com/username/'></input></MDBCardText>
                     }     
                   </MDBListGroupItem>
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fab icon="twitter fa-lg" style={{ color: '#55acee' }} />
-                    {profile.twitter?
-                      <MDBCardText><a href={profile.twitter}>{profile.twitter}</a></MDBCardText>
+                    {ProfileContext?.profile.twitter?
+                      <MDBCardText><a href={ProfileContext?.profile.twitter}>{ProfileContext?.profile.twitter}</a></MDBCardText>
                     :
                       <MDBCardText className="formInput"><input type='text' placeholder='URL: https://twitter.com/username/'></input></MDBCardText>
                     } 
@@ -248,10 +223,10 @@ const handleButtonClick = (e) => {
                     {
                       edit?
                       <MDBCardText className='text-muted'>
-                        <input type='number' name='phone' value={profile.phone} onChange={handleProfileEdit}></input>
+                        <input type='number' name='phone' value={ProfileContext?.profile?.phone} onChange={handleProfileEdit}></input>
                       </MDBCardText>
                       :
-                      <MDBCardText className="text-muted">{profile.phone}</MDBCardText>
+                      <MDBCardText className="text-muted">{ProfileContext?.profile?.phone}</MDBCardText>
                     }
                   </MDBCol>
                 </MDBRow>
@@ -263,10 +238,10 @@ const handleButtonClick = (e) => {
                   <MDBCol sm="9">
                     {edit?
                     <MDBCardText className='text-muted'>
-                      <input type='text' name='qualification' value={profile.qualification} onChange={handleProfileEdit}></input>
+                      <input type='text' name='qualification' value={ProfileContext?.profile?.qualification} onChange={handleProfileEdit}></input>
                     </MDBCardText>
                     :
-                    <MDBCardText className="text-muted">{profile.qualification}</MDBCardText>
+                    <MDBCardText className="text-muted">{ProfileContext?.profile?.qualification}</MDBCardText>
                     }
                   </MDBCol>
                 </MDBRow>
@@ -279,10 +254,10 @@ const handleButtonClick = (e) => {
                     {
                       edit?
                       <MDBCardText className="text-muted">
-                        <input type='text' name='address' value={profile.address} onChange={handleProfileEdit}></input>
+                        <input type='text' name='address' value={ProfileContext?.profile.address} onChange={handleProfileEdit}></input>
                       </MDBCardText>
                       :
-                      <MDBCardText className="text-muted">{profile.address}</MDBCardText>
+                      <MDBCardText className="text-muted">{ProfileContext?.profile?.address}</MDBCardText>
                     }
                   </MDBCol>
                 </MDBRow>

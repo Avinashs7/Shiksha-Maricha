@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
-import axios from 'axios';
+import React from 'react'
+
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { useLecture } from '../contexts/LectureContext';
 
 export default function Course(props) {
-    const [courseDetail,setCourseDetail]=useState();
-    useEffect(()=>{
-        const getLecture=async()=>{
-            await axios.get(`http://localhost:8000/lecture/api/get/${courseId}`,
-            {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
-            .then((data)=>{
-                setCourseDetail(data.data)
-            })
-        }
-        getLecture();
-    },[])
-    const {courseId}=useParams();
+    const course=useLecture();
+    const Lectures=course?.lectures;
+    
   return (
     <>
-        {courseDetail&&
+        {Lectures&&
             <div className="card shadow p-3 mb-5 bg-white rounded">
-            {courseDetail.map((content, index) => (
+            {Lectures.map((content, index) => (
                 <div key={index}>
                 <Link to={`/lecture/${content.links.split('/')[1]}`} style={{textDecoration:"none"}}>
                     <div className="d-flex">
@@ -36,7 +27,7 @@ export default function Course(props) {
                         </div>
                     </div>
                 </Link>
-                {index < courseDetail.length - 1 && <hr className="my-4" />}
+                {index < Lectures.length - 1 && <hr className="my-4" />}
                 </div>
             ))}
             </div>
