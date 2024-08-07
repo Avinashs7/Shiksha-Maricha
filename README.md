@@ -1,6 +1,16 @@
 # Shiksha Marichi - An Edtech Platform
 
-"Shiksha Marichi" is an edtech platform which has role based authentication. Where teacher is authorized to upload courses and it is uploaded to cloud storage and it can be viewed in the web application through media player. Web app consists student role who can enroll for the courses provided by the tutor. 
+📚✨ Introducing Shiksha Marichi: Revolutionizing Education Through Technology!
+
+Shiksha Marichi is a cutting-edge edtech platform designed to transform the learning experience. Here's what makes us special:
+
+🔐 Role-Based Authentication: Ensuring secure and personalized access for both teachers and students.
+
+👩‍🏫 Empowering Educators: Teachers can seamlessly upload their courses to our cloud storage, making them instantly accessible.
+
+🎥 Enhanced Learning: Students can easily enroll in courses and view them through our integrated media player, right within the web application.
+
+Join us on Shiksha Marichi and be a part of the future of education! 🚀📖
 
 ## Future Enchancement
 
